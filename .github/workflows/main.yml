@@ -5,6 +5,8 @@ on:
     types:
       - opened
       - synchronize
+    branches-ignore:
+      - master
 
 env:
   BUILD_NUM: pr-${{ github.event.pull_request.number }}
