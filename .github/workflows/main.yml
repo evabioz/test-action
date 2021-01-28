@@ -6,8 +6,7 @@ on:
       - opened
       - synchronize
     branches:
-      - '!develop'
-      - '!main'
+      - 'feat/**'
 
 env:
   BUILD_NUM: pr-${{ github.event.pull_request.number }}
