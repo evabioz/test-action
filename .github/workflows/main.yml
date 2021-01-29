@@ -5,14 +5,29 @@ on:
     types:
       - opened
       - synchronize
-    branches:
-      - 'feat/*'
 
 env:
   BUILD_NUM: pr-${{ github.event.pull_request.number }}
 
 jobs:
+  do-somethings:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+
+    - name: 'Run script'
+      uses: actions/github-script@0.3.0
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          ./push.sh ${{ github.base_ref }} ${{ github.head_ref }} 
+
   commit-to-comment:
+    if: github.event.action == 'opened'
+    needs: do-somethings
     runs-on: ubuntu-latest
 
     steps:
