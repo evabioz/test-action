@@ -6,7 +6,7 @@ on:
       - opened
       - synchronize
     branches-ignore:
-      - 'chore/*'
+      - 'chore/**'
 
 env:
   BUILD_NUM: pr-${{ github.event.pull_request.number }}
