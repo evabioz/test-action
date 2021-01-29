@@ -1,0 +1,20 @@
+name: My First Action
+
+on:
+  pull_request:
+    types:
+      - closed
+
+env:
+  BUILD_NUM: pr-${{ github.event.pull_request.number }}
+
+jobs:
+  do-somethings:
+    if: ${{ !startsWith(github.head_ref, 'chore/') }}
+    runs-on: ubuntu-latest
+
+
+    - name: 'Run script'
+      run: |-
+        echo "Closing!"
+        
