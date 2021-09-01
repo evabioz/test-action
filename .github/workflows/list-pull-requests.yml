@@ -31,10 +31,10 @@ jobs:
           for (const pr of data) {
             const updatedAt = new Date(pr.updated_at).getTime();
 
-            activePulls.push(`${pr.number}|${pr.head.ref}`)
+            activePulls.push(`${pr.number}+${pr.head.ref}`);
           }
 
-          return activePulls;
+          return activePulls.join('|');
 
     - name: Show Result
       run: |-
