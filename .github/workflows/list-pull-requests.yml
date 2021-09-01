@@ -39,6 +39,8 @@ jobs:
                 head_ref: pr.head.ref,
               })
             }
+
+            return activePulls;
           });
 
     - name: Show Result
