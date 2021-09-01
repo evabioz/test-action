@@ -15,6 +15,7 @@ jobs:
       uses: actions/checkout@v2
 
     - uses: actions/github-script@v4
+      id: set-result
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
@@ -23,9 +24,23 @@ jobs:
             repo: context.repo.repo,
           })
           .then(({ data }) => {
+            const now = Date.now();
+            const 1hour = 60 * 60 * 1000;
+            const activePulls = [];
+
             for (const pr of data) {
               console.log('HEAD_REF: ', pr.head.ref);
               console.log('PR_NUMBER: ', pr.number);
               console.log('PR_UPDATED_AT: ', pr.updated_at);
+              console.log('PR_UPDATED_AT_MS: ', new Date(pr.updated_at).getTime());
+
+              activePulls.push({
+                number: pr.number,
+                head_ref: pr.head.ref,
+              })
             }
           });
+
+    - name: Show Result
+      run: |-
+        echo "${{steps.set-result.outputs.result}}"
