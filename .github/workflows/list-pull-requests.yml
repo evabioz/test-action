@@ -31,11 +31,21 @@ jobs:
           for (const pr of data) {
             const updatedAt = new Date(pr.updated_at).getTime();
 
-            activePulls.push(`${pr.number}+${pr.head.ref}`);
+            activePulls.push(`${pr.number}|${pr.head.ref}`);
           }
 
-          return activePulls.join('|');
+          return activePulls.join(';');
+        result-encoding: string
 
     - name: Show Result
-      run: |-
-        echo "${{steps.set-result.outputs.result}}"
+      run: >
+        echo "${{steps.set-result.outputs.result}}" |
+        sed 's/;/\n/g' |
+        awk -F'|' '{
+          print "Closing Rreview App: By version";
+          cmd="echo "$1 "test "$2;
+          system(cmd)
+        }'
+
+
+
