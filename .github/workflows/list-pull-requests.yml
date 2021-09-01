@@ -22,6 +22,10 @@ jobs:
             owner: context.repo.owner,
             repo: context.repo.repo,
           })
-          .then((pulls) => {
-            console.log(pulls);
+          .then(({ data }) => {
+            for (const pr of data) {
+              console.log('HEAD_REF: ', pr.head.ref);
+              console.log('PR_NUMBER: ', pr.number);
+              console.log('PR_UPDATED_AT: ', pr.updated_at);
+            }
           });
