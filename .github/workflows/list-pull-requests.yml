@@ -19,29 +19,28 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
-          github.pulls.list({
+          const now = Date.now();
+          const oneHour = 60 * 60 * 1000;
+          const activePulls = [];
+
+          const { data } = await github.pulls.list({
             owner: context.repo.owner,
             repo: context.repo.repo,
           })
-          .then(({ data }) => {
-            const now = Date.now();
-            const oneHour = 60 * 60 * 1000;
-            const activePulls = [];
+          
+          for (const pr of data) {
+            console.log('HEAD_REF: ', pr.head.ref);
+            console.log('PR_NUMBER: ', pr.number);
+            console.log('PR_UPDATED_AT: ', pr.updated_at);
+            console.log('PR_UPDATED_AT_MS: ', new Date(pr.updated_at).getTime());
 
-            for (const pr of data) {
-              console.log('HEAD_REF: ', pr.head.ref);
-              console.log('PR_NUMBER: ', pr.number);
-              console.log('PR_UPDATED_AT: ', pr.updated_at);
-              console.log('PR_UPDATED_AT_MS: ', new Date(pr.updated_at).getTime());
+            activePulls.push({
+              number: pr.number,
+              head_ref: pr.head.ref,
+            })
+          }
 
-              activePulls.push({
-                number: pr.number,
-                head_ref: pr.head.ref,
-              })
-            }
-
-            return activePulls;
-          });
+          return activePulls;
 
     - name: Show Result
       run: |-
