@@ -1,0 +1,30 @@
+name: Scheduled Closing Reviews
+
+on:
+  schedule:
+    # https://crontab.guru/every-hour
+    - cron: */1 * * * *
+
+env:
+  PROJECT_ID: inline-dev
+  BUILD_NUM: patron-web-pr-${{ github.event.pull_request.number }}
+
+jobs:
+  merge_schedule:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - uses: actions/github-script@v4
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          octokit.rest.pulls.list({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+          })
+          .then((pulls) => {
+            console.log(pulls);
+          });
