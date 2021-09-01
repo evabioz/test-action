@@ -27,17 +27,11 @@ jobs:
             owner: context.repo.owner,
             repo: context.repo.repo,
           })
-          
-          for (const pr of data) {
-            console.log('HEAD_REF: ', pr.head.ref);
-            console.log('PR_NUMBER: ', pr.number);
-            console.log('PR_UPDATED_AT: ', pr.updated_at);
-            console.log('PR_UPDATED_AT_MS: ', new Date(pr.updated_at).getTime());
 
-            activePulls.push({
-              number: pr.number,
-              head_ref: pr.head.ref,
-            })
+          for (const pr of data) {
+            const updatedAt = new Date(pr.updated_at).getTime();
+
+            activePulls.push(`${pr.number}|${pr.head.ref}`)
           }
 
           return activePulls;
