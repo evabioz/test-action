@@ -3,7 +3,7 @@ name: Scheduled Closing Reviews
 on:
   schedule:
     # https://crontab.guru/every-hour
-    - cron: */1 * * * *
+    - cron: '*/1 * * * *'
 
 env:
   PROJECT_ID: inline-dev
