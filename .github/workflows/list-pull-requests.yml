@@ -25,7 +25,7 @@ jobs:
           })
           .then(({ data }) => {
             const now = Date.now();
-            const 1hour = 60 * 60 * 1000;
+            const oneHour = 60 * 60 * 1000;
             const activePulls = [];
 
             for (const pr of data) {
