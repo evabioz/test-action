@@ -37,15 +37,9 @@ jobs:
           return activePulls.join(';');
         result-encoding: string
 
-    - name: Show Result
-      run: >
-        echo "${{steps.set-result.outputs.result}}" |
-        sed 's/;/\n/g' |
-        awk -F'|' '{
-          print "Closing Rreview App: By version";
-          cmd="echo "$1 "test "$2;
-          system(cmd)
-        }'
+    - name : machine echo github
+      env : { CONTENT : "${{ toJson(github) }}" }
+      run : "echo $CONTENT"
 
 
 
