@@ -3,11 +3,7 @@ name: Scheduled Closing Reviews
 on:
   schedule:
     # https://crontab.guru/every-hour
-    - cron: '*/1 * * * *'
-
-env:
-  PROJECT_ID: inline-dev
-  BUILD_NUM: patron-web-pr-${{ github.event.pull_request.number }}
+    - cron: '0 */1 * * *'
 
 jobs:
   merge_schedule:
@@ -21,10 +17,23 @@ jobs:
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
-          octokit.rest.pulls.list({
+          const now = Date.now();
+          const oneHour = 60 * 60 * 1000;
+          const activePulls = [];
+
+          const { data } = await github.pulls.list({
             owner: context.repo.owner,
             repo: context.repo.repo,
           })
-          .then((pulls) => {
-            console.log(pulls);
-          });
+
+          for (const pr of data) {
+            const updatedAt = new Date(pr.updated_at).getTime();
+            if (now - updatedAt > oneHour) {
+              github.issues.removeLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: pr.number,
+                name: 'review'
+              })
+            }
+          }
