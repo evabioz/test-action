@@ -26,5 +26,5 @@ jobs:
             owner: context.repo.owner,
             repo: context.repo.repo,
             issue_number: context.issue.number,
-            labels: [ "${BRANCH_NAME}" ]
+            labels: [ ${{ github.ref_name }} ]
           })
