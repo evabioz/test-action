@@ -1,0 +1,30 @@
+name: Automatically labeling with a special branch
+
+on:
+  pull_request_target:
+    branches:
+      - 'feat/**'
+
+env:
+  EVENT_NAME: ${{ github.event_name }}
+  BRANCH_REF: ${{ github.ref }}
+  BRANCH_HEAD_REF: ${{ github.head_ref }}
+  BRANCH_BASE_REF: ${{ github.base_ref }}
+  BRANCH_NAME: ${{ github.ref_name }}
+
+jobs:
+  on-opened:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Add $BRANCH_NAME label
+      uses: actions/github-script@0.3.0
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          await github.issues.addLabels({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number,
+            labels: [ "${BRANCH_NAME}" ]
+          })
