@@ -4,6 +4,9 @@ on:
   pull_request:
     branches:
       - 'feat/**'
+    types:
+      - opened
+      - edited
 
 jobs:
   auto-labeling:
