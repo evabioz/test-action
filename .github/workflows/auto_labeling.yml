@@ -26,5 +26,5 @@ jobs:
             owner: context.repo.owner,
             repo: context.repo.repo,
             issue_number: context.issue.number,
-            labels: [ github.ref_name ]
+            labels: [ github.event_name, github.ref, github.head_ref, github.base_ref, github.ref_name ]
           })
